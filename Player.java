@@ -1,10 +1,9 @@
+package game;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.Arrays;
-package game;
- 
 /**
  * Player implements runnable interface
- * @version 1.2
+ * @version 1.3
  */
 public class Player implements Runnable
 {
@@ -21,17 +20,6 @@ public class Player implements Runnable
     private CardDeck leftDeck;
     private CardDeck rightDeck;
 
-    /** THIS METHOD PROBABLY SHOULDNT BE HERE
-     * Consturctor for a Player
-     * @param prference         
-     */
-    public Player(int preference, CardDeck leftDeck, CardDeck rightDeck)
-    {
-        assert preference > 0;
-        this.preference = preference;
-        this.leftDeck = leftDeck;
-        this.rightDeck = rightDeck;
-    }
 
     /**
      * Consturctor for a Player
@@ -47,7 +35,7 @@ public class Player implements Runnable
         // should only be given 4,the last space is so it can take a new card from deck before
         // placing card on a card deck.
         cardsInHand = 0;
-        for(int i=0; i<5; i++)
+        for(int i=0; i<4; i++)
         {
             // while loop is used to remove 'gaps' where null entries may occur between card entries
             // in a card array. - this wont happen in our game, but could happen if the class was to
@@ -136,7 +124,27 @@ public class Player implements Runnable
         return nonPrefered;
     }
 
-
+    @Override
+    /**
+     * Method compares an object for equivalency with the player instance
+     * @param obj       object to be tested for equivalency with player instance
+     * @return          true if object is equivalent, else false
+     */
+    public boolean equals(Object obj)
+    // used so that assertEquals() used in junit testing has an accurate equals method to call when
+    // assert that players are the same, this judges players to be the same if they are in the same 
+    // state, (so same card decks and same hand) not just same player number/preference.
+    {
+        if(obj instanceof Player){
+            Player player = ((Player) obj);
+            if(Arrays.equals(this.hand, player.hand) &&
+               this.preference == player.preference &&
+               this.rightDeck.equals(player.rightDeck)&&
+               this.leftDeck.equals(player.leftDeck))
+               {return true;}
+        }
+        return false;
+    }
     
     /**
      * Method allows player to run and play the game, loop is repeated until a winner

@@ -1,9 +1,9 @@
+package game;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.Arrays;
-package game;
 /**
  * CardDeck class
- * @version 1.2
+ * @version 1.3
  */
 public class CardDeck
 {
@@ -18,12 +18,6 @@ public class CardDeck
     // deck to be non empty (so that they can take a card)    
     private volatile int numberOfCards;
 
-
-    public CardDeck(int maxNumberOfCards)
-    {
-        cards = new Card[maxNumberOfCards];
-        empty = true;
-    }
     
     /**
      * Constructor for a CardDeck
@@ -118,4 +112,19 @@ public class CardDeck
         notifyAll();
     }
 
+    @Override
+    /**
+     * Method compares an object for equivalency with CardDeck instance
+     * @param obj           object to be tested for equivalency with CardDeck instance
+     * @return              true if the object is equivalent, else false
+     */
+    public boolean equals(Object obj)
+    {
+        // used for junit testing to decide if a cardDeck is equal to another
+        if(obj instanceof CardDeck){
+            if(Arrays.equals(this.cards,((CardDeck) obj).cards))
+                return true;
+        }
+        return false;
+    }
 }

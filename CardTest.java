@@ -14,10 +14,28 @@ public class CardTest {
      */
     @Test
     public void testGetValue() {
-        for (int i = 0; i<1000; i++ ){
-            Card tempCard = new Card(i);
-            assertEquals(i,tempCard.getValue()); //asserts the card created has equal value to i 
+            Card tempCard = new Card(1);
+            assertEquals(1,tempCard.getValue()); //asserts the card created has equal value to i 
         }
+    
+    /**
+     * Tests for the various possibilities in the equals method 
+     */
+    @Test
+    public void testEqualsTrue() {
+        Card expectedCard = new Card(1);
+        Card sameValueCard = new Card(1);
+        
+        assertEquals(expectedCard,expectedCard);//reflexive
+        assertEquals(expectedCard,sameValueCard);//same details
+        
+    }
+    
+    @Test
+    public void testEqualsFalse() {
+        Card expectedCard = new Card(1);
+        Card differentValueCard = new Card(2);
+        assertNotEquals(expectedCard,differentValueCard);
     }
     
 }

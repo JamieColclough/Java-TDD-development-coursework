@@ -3,7 +3,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.Arrays;
 /**
  * CardDeck class
- * @version 1.3
+ * @version 1.4
  */
 public class CardDeck
 {
@@ -81,12 +81,18 @@ public class CardDeck
         {throw new InterruptedException();}
         Card card = cards[0]; // take the first card
         
-        for(int i=0; i<=(numberOfCards-2); i++)
-        {
-            cards[i] = cards[i+1];
-            cards[i+1] = null;
+        if (numberOfCards > 1) // if the cardDeck has more than 1, cards will have to
+        {                     // be shuffled down when first one is removed
+            for(int i=0; i<=(numberOfCards-2); i++)
+            {
+                cards[i] = cards[i+1];
+                cards[i+1] = null;
+            }
         }
-        
+        else // if the cardDeck has only have one card, just set the fist
+        {    // entry  to null, on need to shuffle down
+            cards[0] = null;
+        }
         numberOfCards--;      
 
         if (numberOfCards == 0)

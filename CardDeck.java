@@ -17,7 +17,6 @@ public class CardDeck
     // it allows for a notify method to be used to wake up threads waiting for card
     // deck to be non empty (so that they can take a card)    
     private volatile int numberOfCards;
-
     
     /**
      * Constructor for a CardDeck
@@ -43,6 +42,7 @@ public class CardDeck
             }
         }
         if(numberOfCards != 0){empty = false;}
+        else{empty = true;}
     }
 
     /**
@@ -122,7 +122,9 @@ public class CardDeck
     {
         // used for junit testing to decide if a cardDeck is equal to another
         if(obj instanceof CardDeck){
-            if(Arrays.equals(this.cards,((CardDeck) obj).cards))
+            CardDeck cardDeck = ((CardDeck) obj);
+            if(Arrays.equals(this.cards, cardDeck.cards) && 
+                this.empty == cardDeck.empty )
                 return true;
         }
         return false;

@@ -20,7 +20,6 @@ public class Player implements Runnable
     private CardDeck leftDeck;
     private CardDeck rightDeck;
 
-
     /**
      * Consturctor for a Player
      * @param preference        the players perfered number, also the players number
@@ -75,16 +74,14 @@ public class Player implements Runnable
     // value it return true
     {
         int value = hand[0].getValue();
-        System.out.println("value of card one :" + value);
         boolean winningHand = true;
         for (int i=0; i<cardsInHand; i++)
         {   
             if (hand[i].getValue() != value)
-            {   System.out.println("value of card :" + hand[i].getValue());
+            {   
                 winningHand = false;
             }
         }
-        System.out.println("winningHand = "+ winningHand);
         
         return winningHand;
     }
@@ -140,7 +137,8 @@ public class Player implements Runnable
             if(Arrays.equals(this.hand, player.hand) &&
                this.preference == player.preference &&
                this.rightDeck.equals(player.rightDeck)&&
-               this.leftDeck.equals(player.leftDeck))
+               this.leftDeck.equals(player.leftDeck)&&
+               this.cardsInHand == player.cardsInHand)
                {return true;}
         }
         return false;
@@ -152,6 +150,7 @@ public class Player implements Runnable
      */
     public void run()
     {
+        System.out.println("Player " + preference + " started run");
         assert cardsInHand == 4;
         if(winningHand())
         {
@@ -162,30 +161,14 @@ public class Player implements Runnable
             // and writting are carried out sychronously in compareAndSet(), only one player is able to
             // declare its the winner.
                 System.out.println("Player " + preference + " wins");
-            return;
         }           
-
-        if (Thread.currentThread().isInterrupted())
-        {ALL_ALIVE.set(false);
-         System.out.println("Player " + preference + " was interrupted");   
-         rightDeck.gameInterruption();
-         return;} //not printing got out of while loop when detected here
 
         while (!WINNER.get() && ALL_ALIVE.get()&& !Thread.currentThread().isInterrupted()) 
         // will stop running if a winner found, or not all threads
         // are alive, meaning a players thread was interrupted
         // terminated
         {
-            try{
-                if(winningHand())
-                {
-                    // below: only updates if currently no winner (WINNER is false)
-                    if(WINNER.compareAndSet(false,winningHand()))
-                    {System.out.println("Player " + preference + " wins");}
-                    break;
-                }            
-            
-                System.out.println("Player"+ preference+ " in while loop");
+            try{        
 
                 // if a another player has been interrupted, there is the possiblity that this player
                 // could get stuck waiting in takeCard 
@@ -193,9 +176,7 @@ public class Player implements Runnable
                 addCard(leftDeck.takeCard());   // takeCard uses wait() and can throw InterruptedException
                 rightDeck.placeCard(nonPreferedCard());
                 assert cardsInHand == 4;
-                System.out.println("Player" + preference + " taken and placed card");
-            
-            
+                System.out.println("Player " + preference + " taken and placed card");
             
                 if(winningHand())
                 {
@@ -208,20 +189,15 @@ public class Player implements Runnable
             catch(InterruptedException e){ // thrown from takeCard (caught here so we can stop the  player
                                            // straight away, rather than have it exit takeCard() and try to
                                            // carry out the remainder the run method.
-                ALL_ALIVE.set(false);
-                // below: tell the rightDeck that game has been interupted, if a thread is waiting for
-                // this deck to have cards placed on it, it will not stop waiting and throw its own 
-                // interruptedException
-                rightDeck.gameInterruption();
-                System.out.println("Player " + preference + " was interrupted");
                 break;
             }
         }
-
-        if (Thread.currentThread().isInterrupted())
-        {ALL_ALIVE.set(false);
+         ALL_ALIVE.set(false);
+         
+         // below: tell the rightDeck that game has been interupted, if a thread is waiting for
+         // this deck to have cards placed on it, it will not stop waiting and throw its own 
+         // interruptedException         
          rightDeck.gameInterruption();
-         System.out.println("Player " + preference + " was interrupted");}
-        System.out.println("got out of while loop");
+         System.out.println("Player " + preference + " exiting run");
     }
 }

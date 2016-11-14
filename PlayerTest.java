@@ -83,7 +83,7 @@ public class PlayerTest {
      * Test of nonPreferedCard method, of class Player.
      */
     @Test
-    public void nonPreferedCardIsWinningHand() {        
+    public void noNonPreferedCardInHand() {        
         Card[] winningHand = new Card[4];
         for(int i=0;i<4;i++){
             winningHand[i] = new Card(1);

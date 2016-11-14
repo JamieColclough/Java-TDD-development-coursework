@@ -39,7 +39,7 @@ public class CardDeckTest {
     }
 
     /**
-     * Test of gameInterruption method, of class CardDeck.
+     * Tests the gameInterruption method works successfully on an instance of CardDeck
      */
     @Test
     public void testGameInterruption() {
@@ -51,7 +51,7 @@ public class CardDeckTest {
     }
 
     /**
-     * Test of takeCard method, of class CardDeck.
+     * Tests that the takeCard method works on the corner case of a full deck
      * @throws java.lang.InterruptedException
      */
     @Test
@@ -66,6 +66,10 @@ public class CardDeckTest {
         assertEquals(expectedDeck,testDeck);//asserts the hand taken is the same as the mock deck with same contents as expected result           
     }
     
+    /**
+     * Tests that the takeCard method works on a regular deck
+     *@throws java.lang.InterruptedException
+     */
     @Test
     public void takeCardFromRegularDeck() throws InterruptedException{    
         cardArray1 = new Card[28];
@@ -82,7 +86,10 @@ public class CardDeckTest {
         assertEquals(expectedCard,testCard);
         assertEquals(expectedDeck,testDeck);//asserts the hand taken is the same as the mock deck with same contents as expected result           
     }
-    
+    /**
+     * tests the takeCard method on the corner case of a deck with only 1 element remaining
+     * @throws java.lang.InterruptedException
+     */
     @Test
     public void takeCardFromDeckWithOneElement() throws InterruptedException{
         Card[] cardArray = new Card[1];
@@ -98,7 +105,9 @@ public class CardDeckTest {
         assertEquals(expectedDeck,testDeck);
     }
 
-
+    /**
+     * Tests the placeCard method on the corner case of an empty deck
+     */
     @Test
     public void placeCardOnEmptyDeck(){
         Card[] testCardArray = new Card[2];
@@ -113,6 +122,9 @@ public class CardDeckTest {
         assertEquals(expectedDeck,testDeck);        
     }
     
+    /**
+     * Tests placeCard method on the regular case of an non-empty deck
+     */
     @Test
     public void placeCardOnNonEmptyDeck(){
         Card[] testCardArray = new Card[2];
@@ -130,7 +142,7 @@ public class CardDeckTest {
     }
 
     /**
-     * Test of equals method, of class CardDeck.
+     * Test of equals method on instances of CardDeck in which true should be returned
      */
     @Test
     public void testEqualsTrue() {
@@ -146,6 +158,9 @@ public class CardDeckTest {
         assertEquals(expectedDeck,cardDeck2);//deck will be equal to deck with same stats
     }
     
+    /**
+     * Test of equals method on instances of CardDeck in which false should be returned
+     */
     @Test
     public void testEqualsFalse(){        
         for (int i=0;i<4;i++){

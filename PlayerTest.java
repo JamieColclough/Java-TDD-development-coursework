@@ -6,7 +6,7 @@ import org.junit.Before;
 
 /**
  * series of unit tests for player class
- * @version 1.0
+ * @version 1.1
  */
 public class PlayerTest {
     Player expectedPlayer;
@@ -35,7 +35,7 @@ public class PlayerTest {
     }
 
     /**
-     * Test of addCard method, of class Player.
+     * Test to analyse behaviour of addCard() on a deck with 4 cards already in it
      */
     @Test
     public void addCardToHandWith4Cards() {
@@ -48,6 +48,9 @@ public class PlayerTest {
         assertTrue(testPlayer.addCard(new Card(4)));//
     }
     
+    /**
+     * Test to analyse behaviour of addCard() on a deck with 5 players in it
+     */
     @Test
     public void addCardToHandWith5Cards(){
          Card[] testHand = new Card[4];
@@ -60,7 +63,7 @@ public class PlayerTest {
     }
 
     /**
-     * Test of winningHand method, of class Player.
+     * Test to show winningHand() returns true on a winning deck
      */
     @Test
     public void testWinningHandTrue() {
@@ -72,6 +75,9 @@ public class PlayerTest {
         assertTrue(testPlayer.winningHand());//asserts that if the player has a winning hand, will return true
         }
     }
+    /**
+     * Test to show winningHand() returns false on a non-winning deck
+     */
     @Test
     public void testWinningHandFalse(){
         testPlayer = new Player(1,genericHand,cardDeckl,cardDeckr);
@@ -80,7 +86,7 @@ public class PlayerTest {
     }
 
     /**
-     * Test of nonPreferedCard method, of class Player.
+     * Test that when the hand is a winning one, nothing is changed
      */
     @Test
     public void noNonPreferedCardInHand() {        
@@ -94,6 +100,9 @@ public class PlayerTest {
         assertEquals(expectedPlayer,testPlayer);
         }
     }
+    /**
+     * Test to see whether the nonPreferredCard method works on a hand where the first non-preferred card is first in the hand
+     */
     @Test
     public void nonPreferedCardIsFirst() {  
         genericHand = new Card[4];
@@ -110,6 +119,9 @@ public class PlayerTest {
         assertEquals(expectedPlayer,testPlayer);       
     }
     
+    /**
+     * Test to see whether the nonPrefferedCard method works on a hand where the first non-preferred card is last in the hand
+     */
     @Test
     public void nonPreferedCardIsLast() {  
         genericHand = new Card[4];
@@ -127,7 +139,7 @@ public class PlayerTest {
     }
 
     /**
-     * Test of equals method, of class Player.
+     * Tests equals method on instances of Player in which the method should return true
      */
     @Test
     public void testEqualsTrue() {        
@@ -139,6 +151,10 @@ public class PlayerTest {
         assertEquals(expectedPlayer,testPlayer); //should be equal by defined method       
     }
     
+    
+    /**
+     * Tests equals method on instances of Player in which the method should return false
+     */
     @Test
     public void testEqualsFalse(){
         

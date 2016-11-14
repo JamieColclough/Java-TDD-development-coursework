@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 /**
  *Series of tests for CardDeck class
- * @version 1.1
+ * @version 1.2
  */
 public class CardDeckTest {
     CardDeck cardDeck2;

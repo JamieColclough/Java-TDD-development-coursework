@@ -6,10 +6,9 @@ import static org.junit.Assert.*;
 
 /**
  *Series of tests for CardDeck class
- * @version 1.0
+ * @version 1.1
  */
 public class CardDeckTest {
-    CardDeck cardDeck1; 
     CardDeck cardDeck2;
     CardDeck cardDeck3;
     CardDeck cardDeck4;
@@ -140,11 +139,11 @@ public class CardDeckTest {
             cardArray2[i] = new Card(i);  
 
         }
-        cardDeck1 = new CardDeck(cardArray1);
+        expectedDeck = new CardDeck(cardArray1);
         cardDeck2 = new CardDeck(cardArray2);
         
-        assertEquals(cardDeck1,cardDeck1);//deck must be equal to itself, equality is reflexive
-        assertEquals(cardDeck1,cardDeck2);//deck will be equal to deck with same stats
+        assertEquals(expectedDeck,expectedDeck);//deck must be equal to itself, equality is reflexive
+        assertEquals(expectedDeck,cardDeck2);//deck will be equal to deck with same stats
     }
     
     @Test
@@ -153,6 +152,7 @@ public class CardDeckTest {
             cardArray1[i] = new Card(i);
             cardArray3[i] = new Card(i); 
     }
+        expectedDeck = new CardDeck(cardArray1);
 
         for (int i=0;i<4;i++){cardArray4[i] = new Card(i+7);}
         int reverseCount = 4;
@@ -161,15 +161,15 @@ public class CardDeckTest {
             reverseCount --;
         }
 
-        cardDeck3 = new CardDeck(cardArray3);
-        cardDeck4 = new CardDeck(cardArray4);
-        cardDeck5 = new CardDeck(cardArray5);
-        cardDeck6 = new CardDeck(cardArray6);
+        cardDeck3 = new CardDeck(cardArray3);//constructs cardDeck with same values as expectedDeck but a higher array number
+        cardDeck4 = new CardDeck(cardArray4);//constructs cardDeck with each card 7 higher than expectedDeck
+        cardDeck5 = new CardDeck(cardArray5);//constructs cardDeck with the same cards as expectedDeck but in reverse
+        cardDeck6 = new CardDeck(cardArray6);//constucts cardDeck with an empty array
         
         
-        assertNotEquals(cardDeck1,cardDeck3);//rest will be false as each has a slight difference
-        assertNotEquals(cardDeck1,cardDeck4);
-        assertNotEquals(cardDeck1,cardDeck5);
-        assertNotEquals(cardDeck1,cardDeck6);
+        assertNotEquals(expectedDeck,cardDeck3);//rest will be false as each has a slight difference
+        assertNotEquals(expectedDeck,cardDeck4);
+        assertNotEquals(expectedDeck,cardDeck5);
+        assertNotEquals(expectedDeck,cardDeck6);
     }
 }

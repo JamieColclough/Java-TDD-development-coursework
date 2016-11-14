@@ -38,7 +38,7 @@ public class PlayerTest {
      * Test of addCard method, of class Player.
      */
     @Test
-    public void testAddCard4() {
+    public void addCardToHandWith4Cards() {
         Card[] testHand = new Card[4];
         for(int i=0;i<4;i++){ 
             testHand[i] = new Card(i);
@@ -49,7 +49,7 @@ public class PlayerTest {
     }
     
     @Test
-    public void testAddCard5(){
+    public void addCardToHandWith5Cards(){
          Card[] testHand = new Card[4];
         for(int i=0;i<4;i++){ 
             testHand[i] = new Card(i);
@@ -95,7 +95,7 @@ public class PlayerTest {
         }
     }
     @Test
-    public void testNonPreferedCardFirst() {  
+    public void nonPreferedCardIsFirst() {  
         genericHand = new Card[4];
         Card[] testHand = new Card[4];
         for(int i=0;i<4;i++){
@@ -111,7 +111,7 @@ public class PlayerTest {
     }
     
     @Test
-    public void testNonPreferedCardLast() {  
+    public void nonPreferedCardIsLast() {  
         genericHand = new Card[4];
         Card[] testHand = new Card[4];
         for(int i=0;i<3;i++){

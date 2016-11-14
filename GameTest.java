@@ -14,7 +14,7 @@ import org.junit.rules.TemporaryFolder;
 
 /**
  * series of tests for Game application class
- * @version 1.0
+ * @version 1.1
  */
 public class GameTest {  
     File file1;

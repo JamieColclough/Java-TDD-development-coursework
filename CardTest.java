@@ -1,6 +1,6 @@
 /*
  * Test class for Card class
- * version 1.0
+ * version 1.1
  */
 package game;
 
@@ -19,7 +19,7 @@ public class CardTest {
         }
     
     /**
-     * Tests for the various possibilities in the equals method 
+     * Tests for the various possibilities in which the equals method should return true i.e. same card and card with same value
      */
     @Test
     public void testEqualsTrue() {
@@ -31,6 +31,9 @@ public class CardTest {
         
     }
     
+    /**
+     * Tests for the one possibility in which the equals method should return false i.e. card with a different denomination
+     */
     @Test
     public void testEqualsFalse() {
         Card expectedCard = new Card(1);

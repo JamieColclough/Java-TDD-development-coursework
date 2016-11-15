@@ -14,7 +14,7 @@ public class Player implements Runnable
     private final static AtomicBoolean ALL_ALIVE = new AtomicBoolean(true);
     // AtomicBoolean used so that only one player thread can read/write at a time,
     // again this allows only most up to date value to be seen.    
-    private final Card[] hand = new Card[5];  // 5 becasue rules specify you take a card before placing card
+    private final Card[] hand = new Card[5];  // 5 because rules specify you take a card before placing card
     private int cardsInHand = 0;
     private final int preference;
     private final CardDeck leftDeck;
@@ -197,7 +197,7 @@ public class Player implements Runnable
          
          // below: tell the rightDeck that game has been interrupted, if a thread is waiting for
          // this deck to have cards placed on it, it will not stop waiting and throw its own 
-         // nterruptedException         
+         // InterruptedException         
          rightDeck.gameInterruption();
          System.out.println("Player " + preference + " exiting run");
     }

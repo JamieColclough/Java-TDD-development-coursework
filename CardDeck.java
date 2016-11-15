@@ -90,7 +90,7 @@ public class CardDeck
                 cards[i+1] = null;
             }
         }
-        else // if the cardDeck has only have one card, just set the fist
+        else // if the cardDeck has only have one card, just set the first
         {    // entry  to null, on need to shuffle down
             cards[0] = null;
         }

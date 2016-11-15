@@ -31,7 +31,7 @@ public class CardDeck
         // iterate through to remove null 'gaps' between card entries, this does not occur in our
         // program but it is possible if class used for other purposes.
         // also allows correct numberOfCards variable to be set, can not use cards.length as this
-        // is the maximum the card deck can hold in this.cards, not the actuall number of 
+        // is the maximum the card deck can hold in this.cards, not the actual number of 
         // initial cards
         for(int i=0; i<cards.length; i++)
         {
@@ -47,7 +47,7 @@ public class CardDeck
 
     /**
      * Method tells other threads using this particular deck that the game has been interrupted by
-     * setting static atomicboolean gameInterrupted to true
+     * setting static AtomicBoolean gameInterrupted to true
      * it also notifies threads that this has happened so that threads waiting for a card
      * to placed on this deck stop waiting.
      */
@@ -64,6 +64,7 @@ public class CardDeck
      * throws InterruptionException if wait() is interrupted or gameInterrupted
      * 
      * @return          first (top) card
+     * @throws java.lang.InterruptedException
      */
     public synchronized Card takeCard() throws InterruptedException
     {
@@ -112,7 +113,7 @@ public class CardDeck
         // assert this because adding more than cards.length should not actually occur in the game
         // the cardDeck may hold more than it did initialy, but its length was set to the maximum
         // when it was constructed
-        cards[numberOfCards] = card; // add it after the last the card entry to be at 'bottom'
+        cards[numberOfCards] = card; // add it after the last card entry to be at 'bottom'
         numberOfCards++;             // of deck
         empty = false;
         notifyAll();

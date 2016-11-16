@@ -14,7 +14,7 @@ import org.junit.rules.TemporaryFolder;
 
 /**
  * series of tests for Game application class
- * @version 1.1
+ * @version 1.2
  */
 public class GameTest {  
     File file1;
@@ -66,19 +66,24 @@ public class GameTest {
         fr3 = new FileReader(file3);
     }
 
-    /**
-     * Tests that correctFile works in normal circumstances i.e. the file is legitimate
-     * @throws java.io.FileNotFoundException
-     */
+    //first 3 tests based on file size, tests for when file is exactly right,too small and too big
+    //The deck we are using is exactly correct for game with 4 players
+   
     @Test
-    public void testCorrectFileNormalFile() throws FileNotFoundException{
-        //first 3 tests based on file size, tests for when file is exactly right,too small and too big
-        assertTrue(Game.correctFile(fr1,3));
-        fr1= new FileReader(file1);
-        assertTrue(Game.correctFile(fr1,4));
-        fr1 = new FileReader(file1);
-        assertFalse(Game.correctFile(fr1,5));
+    public void testCorrectFileTooBig() throws FileNotFoundException{
+        assertTrue(Game.correctFile(fr1,3));       
     }
+    
+    @Test
+    public void testCorrectFileCorrectSize() throws FileNotFoundException{
+        assertTrue(Game.correctFile(fr1,4));
+    }
+    
+    @Test
+    public void testCorrectFileTooSmall() throws FileNotFoundException{
+        assertFalse(Game.correctFile(fr1,5));
+    } 
+    
     /**
      * Tests that correctFile works when the file is empty
      * @throws FileNotFoundException 

@@ -34,6 +34,9 @@ public class MockGameWinner
         Thread a = new Thread(player1);                       // so player2 will go
         Thread b = new Thread(player2);                       // into waiting state                                  
         
+        a.setName("Player 1");
+        b.setName("Player 2");
+        
         b.start();
         // what for thread b (player 2) to get into waiting state
         while(!(b.getState() == Thread.State.WAITING)){} 

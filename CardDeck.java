@@ -3,7 +3,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.Arrays;
 /**
  * CardDeck class
- * @version 1.4
+ * @version 1.5
  */
 public class CardDeck
 {
@@ -72,7 +72,7 @@ public class CardDeck
         {
             
             
-                System.out.println("im waiting");
+                System.out.println(Thread.currentThread().getName() +" is waiting");
                 wait();
             
             

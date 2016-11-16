@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  *Game application class
- *@ version 1.5
+ *@ version 1.6
  */
 public class Game {
     

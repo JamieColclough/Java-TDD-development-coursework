@@ -172,6 +172,7 @@ public class Game {
             //z made to find 0th member of array for right deck when lightDeck is n-1
             int z = (q == n-1)?0:q+1;
             playerArray[q] = new Thread (new Player((q+1),handArray[q],cardDecks[q],cardDecks[z]));
+            playerArray[q].setName("Player " + (q+1));
         }
         
         for (Thread player: playerArray){player.start();}

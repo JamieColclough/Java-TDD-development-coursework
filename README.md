@@ -1,5 +1,5 @@
 PROJECT TITLE: Card Game
-VERSION or DATE: 1.5
+VERSION: 1.5
 USER INSTRUCTIONS: 
 The program will ask you to input an integer value of n, where 1<n<8.
 This is the number of players the game will have.

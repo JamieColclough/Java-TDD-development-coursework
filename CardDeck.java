@@ -12,7 +12,7 @@ public class CardDeck
     // time, ensures most updated value is read
     private final Card[] cards;
     private volatile boolean empty;
-    // needed rather than just checking isEmpty() becasuse it needs to be updated
+    // volatile boolean empty used as its updated
     // in way that allows the other threads sharing this card deck to see the change
     // it allows for a notify method to be used to wake up threads waiting for card
     // deck to be non empty (so that they can take a card)    

@@ -99,13 +99,13 @@ public class Player implements Runnable
     @Override
     /**
      * Method compares an object for equivalency with the player instance
+     * used so that assertEquals() used in junit testing has an accurate equals method to call when
+     * asserting that players are the same, this judges players to be the same if they are in the same 
+     * state, (so same card decks and same hand) not just same player number/preference.
      * @param obj       object to be tested for equivalency with player instance
      * @return          true if object is equivalent, else false
      */    
     public boolean equals(Object obj)
-    // used so that assertEquals() used in junit testing has an accurate equals method to call when
-    // assert that players are the same, this judges players to be the same if they are in the same 
-    // state, (so same card decks and same hand) not just same player number/preference.
     {
         if(obj instanceof Player){
             Player player = ((Player) obj);
@@ -131,7 +131,7 @@ public class Player implements Runnable
             // below: only updates if currently no winner (WINNER is false)
             if(WINNER.compareAndSet(false,winningHand()))
             // compareAndSet used as it combines an atomic read and write, so that only one player
-            // at a time can read the WINNER value and change the value at time. as the reading 
+            // at a time can read the WINNER value and change the value at time. Because the reading 
             // and writting are carried out sychronously in compareAndSet(), only one player is able to
             // declare its the winner.
                 System.out.println("Player " + preference + " wins");
@@ -141,12 +141,9 @@ public class Player implements Runnable
         while (!WINNER.get() && ALL_ALIVE.get()&& !Thread.currentThread().isInterrupted()) 
         // will stop running if a winner found, or not all threads
         // are alive, meaning a players thread was interrupted
-        // terminated
         {
             try{          
                             
-                // if a another player has been interrupted, there is the possiblity that this player
-                // could get stuck waiting in takeCard 
                 
                 hand.add(leftDeck.takeCard());   // takeCard uses wait() and can throw InterruptedException
                 rightDeck.placeCard(nonPreferedCard());
@@ -165,7 +162,7 @@ public class Player implements Runnable
             }
             catch(InterruptedException e){ // thrown from takeCard (caught here so we can stop the  player
                                            // straight away, rather than have it exit takeCard() and try to
-                                           // carry out the remainder the run method.
+                                           // carry out the remainder of the run method.
                 break;
             }
         }

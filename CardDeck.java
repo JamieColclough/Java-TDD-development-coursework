@@ -93,7 +93,6 @@ public class CardDeck<T extends Card>
      */    
     public synchronized void placeCard(T card)
     {
-        // not sure what new assertion is needed here assert numberOfCards < cards.length;
         cards.add(card);
         empty = false;
         notifyAll();

@@ -1,16 +1,16 @@
 package game;
 
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *Series of tests for CardDeck class
- * @version 1.2
+ *Series of tests for generic CardDeck class
+ * @version 2.0
  */
 public class CardDeckTest {
     CardDeck cardDeck2;
-    CardDeck cardDeck3;
     CardDeck cardDeck4;
     CardDeck cardDeck5;
     CardDeck cardDeck6;
@@ -21,25 +21,25 @@ public class CardDeckTest {
     Card testCard;
     Card expectedCard;
     
-    Card[] cardArray1 = new Card[4];
-    Card[] cardArray2 = new Card[4];
-    Card[] cardArray3 = new Card[5];
-    Card[] cardArray4 = new Card[4];
-    Card[] cardArray5 = new Card[4];
-    Card[] cardArray6 = new Card[0];
+    ArrayList<Card> cardArray1 = new ArrayList<>();
+    ArrayList<Card> cardArray2 = new ArrayList<>();
+    ArrayList<Card> cardArray3 = new ArrayList<>();
+    ArrayList<Card> cardArray4 = new ArrayList<>();
+    ArrayList<Card> cardArray5 = new ArrayList<>();
+    ArrayList<Card> cardArray6 = new ArrayList<>();
     
     @Before
     public void setUp() {
-        Card[] cardArray = new Card[28]; //28 highest possible size as this is 4n
+        ArrayList<Card> cardArray = new ArrayList<>();
         cardDeck2 = new CardDeck(cardArray);//initialises cardDeck2 as an empty deck
-        for (int i=0;i<28;i++) cardArray[i] = new Card(i);
+        for (int i=0;i<28;i++) cardArray.add(new Card(i));
         expectedDeck = new CardDeck(cardArray);//initialises expectedDeck as a deck with cards with values from 0 to 27
         testDeck = new CardDeck(cardArray);
 
     }
 
     /**
-     * Tests the gameInterruption method works successfully on an instance of CardDeck
+     * Tests the gameInterruption method works successfully
      */
     @Test
     public void testGameInterruption() {
@@ -51,52 +51,53 @@ public class CardDeckTest {
     }
 
     /**
-     * Tests that the takeCard method works on the corner case of a full deck
+     * Tests that the takeCardmethod works on the corner case of a full deck
      * @throws java.lang.InterruptedException
      */
     @Test
     public void takeCardFromFullDeck() throws InterruptedException{    
-        cardArray1 = new Card[28];
-        for(int i=1;i<28;i++) cardArray1[i-1] = new Card(i);
+        cardArray1 = new ArrayList<>();
+        for(int i=1;i<28;i++) cardArray1.add(new Card(i));
         expectedDeck = new CardDeck(cardArray1);          
         
         expectedCard = new Card(0);
         testCard = testDeck.takeCard();
         assertEquals(expectedCard,testCard);
-        assertEquals(expectedDeck,testDeck);//asserts the hand taken is the same as the mock deck with same contents as expected result           
+        assertEquals(expectedDeck,testDeck);//asserts the hand taken is the same as the mock deck with same contents as expected result   
     }
     
     /**
      * Tests that the takeCard method works on a regular deck
-     *@throws java.lang.InterruptedException
+     * @throws InterruptedException 
      */
     @Test
     public void takeCardFromRegularDeck() throws InterruptedException{    
-        cardArray1 = new Card[28];
-        cardArray2 = new Card[28];
+        cardArray1 = new ArrayList<>();
+        cardArray2 = new ArrayList<>();
         
-        for (int i=0;i<15;i++) cardArray1[i] = new Card(i);
+        for (int i=0;i<15;i++) cardArray1.add(new Card(i));
         testDeck = new CardDeck(cardArray1);
         
-        for(int i=1;i<15;i++) cardArray2[i-1] = new Card(i);
+        for(int i=1;i<15;i++) cardArray2.add(new Card(i));
         expectedDeck = new CardDeck(cardArray2);          
         
         expectedCard = new Card(0);
         testCard = testDeck.takeCard();
         assertEquals(expectedCard,testCard);
         assertEquals(expectedDeck,testDeck);//asserts the hand taken is the same as the mock deck with same contents as expected result           
-    }
+    }        
+    
     /**
      * tests the takeCard method on the corner case of a deck with only 1 element remaining
-     * @throws java.lang.InterruptedException
+     * @throws InterruptedException 
      */
     @Test
     public void takeCardFromDeckWithOneElement() throws InterruptedException{
-        Card[] cardArray = new Card[1];
-        cardArray[0] = new Card(0);
+        ArrayList<Card> cardArray = new ArrayList<>();
+        cardArray.add(new Card(0));
         testDeck = new CardDeck(cardArray); 
         
-        Card[] emptyArray = new Card[1];
+        ArrayList<Card> emptyArray = new ArrayList<>();
         expectedDeck = new CardDeck(emptyArray);
         
         expectedCard = new Card(0);
@@ -110,45 +111,45 @@ public class CardDeckTest {
      */
     @Test
     public void placeCardOnEmptyDeck(){
-        Card[] testCardArray = new Card[2];
+        ArrayList<Card> testCardArray = new ArrayList<>();
             
-        testCardArray[0] = new Card(0);
+        testCardArray.add(new Card(0));
             
         expectedDeck = new CardDeck(testCardArray);
         //decks created so the value will be similar to the queuing mechanism implemented by the cardDeck
         
-        testDeck = new CardDeck(new Card[2]);
+        testDeck = new CardDeck(new ArrayList<>());
         testDeck.placeCard(new Card(0));  
         assertEquals(expectedDeck,testDeck);        
     }
     
     /**
-     * Tests placeCard method on the regular case of an non-empty deck
+     * Tests placeCard method on the regular case of a non-empty deck
      */
     @Test
     public void placeCardOnNonEmptyDeck(){
-        Card[] testCardArray = new Card[2];
+        ArrayList<Card> testCardArray = new ArrayList<>();
            
-        testCardArray[0] = new Card(0);
-        testCardArray[1] = new Card(1);
+        testCardArray.add(new Card(0));
+        testCardArray.add(new Card(1));
            
         expectedDeck = new CardDeck(testCardArray);
          
-        Card[] cardArray = new Card[2];
-        cardArray[0] = new Card(0);        
+        ArrayList<Card> cardArray = new ArrayList<>();
+        cardArray.add(new Card(0));        
         testDeck = new CardDeck(cardArray);
         testDeck.placeCard(new Card(1));  
         assertEquals(expectedDeck,testDeck);      
     }
 
     /**
-     * Test of equals method on instances of CardDeck in which true should be returned
+     * Test of equals method on instances of cardDeck win which true should be returned
      */
     @Test
     public void testEqualsTrue() {
         for (int i=0;i<4;i++){
-            cardArray1[i] = new Card(i);
-            cardArray2[i] = new Card(i);  
+            cardArray1.add(new Card(i));
+            cardArray2.add(new Card(i));  
 
         }
         expectedDeck = new CardDeck(cardArray1);
@@ -164,25 +165,23 @@ public class CardDeckTest {
     @Test
     public void testEqualsFalse(){        
         for (int i=0;i<4;i++){
-            cardArray1[i] = new Card(i);
-            cardArray3[i] = new Card(i); 
+            cardArray1.add(new Card(i));
     }
-        expectedDeck = new CardDeck(cardArray1);
 
-        for (int i=0;i<4;i++){cardArray4[i] = new Card(i+7);}
+        for (int i=0;i<4;i++){cardArray4.add(new Card(i+7));}
         int reverseCount = 4;
         for (int i=0;i<4;i++){
-            cardArray5[i] = new Card(reverseCount);
+            cardArray5.add(new Card(reverseCount));
             reverseCount --;
         }
+        expectedDeck = new CardDeck(cardArray1);
 
-        cardDeck3 = new CardDeck(cardArray3);//constructs cardDeck with same values as expectedDeck but a higher array number
-        cardDeck4 = new CardDeck(cardArray4);//constructs cardDeck with each card 7 higher than expectedDeck
-        cardDeck5 = new CardDeck(cardArray5);//constructs cardDeck with the same cards as expectedDeck but in reverse
-        cardDeck6 = new CardDeck(cardArray6);//constucts cardDeck with an empty array
+        //cardDeck 3 is not tested for equality here as the resizing of the arrayLists means that it would be equal to expectedDeck
+        cardDeck4 = new CardDeck(cardArray4);
+        cardDeck5 = new CardDeck(cardArray5);
+        cardDeck6 = new CardDeck(cardArray6);
         
         
-        assertNotEquals(expectedDeck,cardDeck3);//rest will be false as each has a slight difference
         assertNotEquals(expectedDeck,cardDeck4);
         assertNotEquals(expectedDeck,cardDeck5);
         assertNotEquals(expectedDeck,cardDeck6);

@@ -13,7 +13,7 @@ public class Player implements Runnable
     private final static AtomicBoolean ALL_ALIVE = new AtomicBoolean(true);
     // AtomicBoolean used so that only one player thread can read/write at a time,
     // again this allows only most up to date value to be seen.
-    private final ArrayList<Card> hand = new ArrayList<>(5);  
+    private final ArrayList<Card> hand = new ArrayList<>(); 
     private final int preference;
     private final CardDeck<Card> leftDeck;
     private final CardDeck<Card> rightDeck;

@@ -21,7 +21,7 @@ public class Player implements Runnable
 
     /**
      * Consturctor for a Player
-     * @param preference        the players perfered number, also the players number
+     * @param preference        the players perferred number, also the players number
      * @param hand              cards dealt to player, the players hand
      * @param leftDeck          deck of cards the player will take a card from
      * @param rightDeck         deck of cards the player will place a card on
@@ -72,16 +72,16 @@ public class Player implements Runnable
 
     /**
      * Method returns first card whose value is not the same as the players preference
-     * @return          non prefered card, or null if no such card was found
+     * @return          non preferred card, or null if no such card was found
      */    
     public Card nonPreferedCard()
     {
         // should be called after winningHand() check, if the hand is a 'winning hand' consisting of cards
-        // that are the players preference this method will return null. A player cannot give a prefered
+        // that are the players preference this method will return null. A player cannot give a preferred
         // card if there are none.
         Card nonPrefered = null;
         
-        if (!winningHand()){ // checks that there are non prefered cards before trying to take one.
+        if (!winningHand()){ // checks that there are non preferred cards before trying to take one.
             for(Card card : hand)
             {
                 if(card.getValue() != preference)

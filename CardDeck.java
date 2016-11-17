@@ -109,7 +109,8 @@ public class CardDeck<T extends Card>
         // used for junit testing to decide if a cardDeck is equal to another
         if(obj instanceof CardDeck){
             CardDeck cardDeck = ((CardDeck) obj);
-            if(this.cards.equals(cardDeck.cards))
+            if(this.cards.equals(cardDeck.cards) &&
+                this.empty == cardDeck.empty)
                 return true;
         }
         return false;

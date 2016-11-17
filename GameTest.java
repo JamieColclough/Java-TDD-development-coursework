@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -13,8 +14,8 @@ import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 
 /**
- * series of tests for Game application class
- * @version 1.2
+ * series of tests for Game application class edited for phase 2
+ * @version 2.0
  */
 public class GameTest {  
     File file1;
@@ -108,16 +109,16 @@ public class GameTest {
     }
     
     /**
-     * Tests that when when a file is valid, winnableGame returns false
+     * Tests that when when a file is valid, winnableGame returns true
      */
     @Test
     public void testWinnableGameValid(){
-        Card[] validCardArray = new Card[24];        
+        ArrayList<Card> validCardArray = new ArrayList<>();        
         
         int cardCount = 0;
         for (int i=0; i<4; i++){
             for (int j=0;j<6;j++){
-                validCardArray[cardCount] = new Card(j);
+                validCardArray.add(cardCount, new Card(j));
                 cardCount++;
             }
         }        
@@ -129,11 +130,11 @@ public class GameTest {
      */
     @Test
     public void testWinnableGameInvalid(){
-        Card[] invalidCardArray = new Card[24];
+        ArrayList<Card> invalidCardArray = new ArrayList<>();
         int cardCount = 0;
-        for (int i=0; i<3; i++){
+        for (int i=0; i<3; i++){ //3 of each card type, not enough to win
             for (int j=0;j<8;j++){
-                invalidCardArray[cardCount] = new Card(j);
+                invalidCardArray.add(cardCount, new Card(j));
                 cardCount++;
             }
         }
@@ -147,21 +148,21 @@ public class GameTest {
     public void testDeal() {
         int x = 1;
         //n=4 chosen for this test
-            Card[] deck = new Card[32];
+            ArrayList<Card> deck = new ArrayList<>();
                for (int i=1; i<=32; i++){       
-                   if (x>4) x=1;
-                   deck[i-1] = new Card(x);
+                   if (x>4) x=1; //creates arrayList
+                   deck.add(new Card(x));
                    x++;
                 }
                
             //tests both dealHand and Deal deck so testing those functions seperately is unecessary
-            Card[][] dealedHand = Game.deal(deck, true,4,0);
-            Card[][] dealedDeck = Game.deal(deck, false, 4, 16);
+            ArrayList<ArrayList<Card>> dealedHand = Game.deal(deck,4);
+            ArrayList<ArrayList<Card>> dealedDeck = Game.deal(deck,4);
                 
             for (int j=0;j<4;j++){                    
                 for (int m=0; m<4; m++){
-                    testHandValue = dealedHand[j][m].getValue();
-                    testDeckValue = dealedDeck[j][m].getValue();
+                    testHandValue = dealedHand.get(j).get(m).getValue();
+                    testDeckValue = dealedDeck.get(j).get(m).getValue();
                     assertEquals(j+1,testHandValue);
                     assertEquals(j+1,testDeckValue);
                 }
@@ -175,11 +176,11 @@ public class GameTest {
      */
     @Test
     public void testFillPack() {
-        Card[] testPack = Game.fillPack(fr1,4);        
+        ArrayList<Card> testPack = Game.fillPack(fr1,4);        
          
         for(int i=0;i<32;i++){
-            Card testCard = new Card(i);
-            assertEquals(testPack[i],testCard); //checks every card in filled pack is present and in the correct order 
+            Card expectedCard = new Card(i);
+            assertEquals(expectedCard,testPack.get(i)); //checks every card in filled pack is present and in the correct order 
         }
     }
     

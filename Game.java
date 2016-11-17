@@ -4,11 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *Game application class
- *@ version 1.6
+ * Game2 class with generics
+ * @version 2.0 
  */
 public class Game {
     
@@ -32,18 +33,19 @@ public class Game {
             else if (fileLength > 8*n){System.out.println("File too large, using first " + 8*n + " Cards");return true;}
             else {return true;}
         }
-    /**
+    
+     /**
      * Method to fill initialPack from text file
      * @param fr fileReader of text file that is proven to already obey the rules of the game
      * @param n the amount of players in the game
      * @return the pack filled with card instances
      */
-    static Card[] fillPack(FileReader fr,int n ){
+    static ArrayList<Card> fillPack(FileReader fr,int n ){
         Scanner fileScan = new Scanner(fr);
-        Card[] initialPack = new Card[8*n];
+        ArrayList<Card> initialPack = new ArrayList<>();
         for (int i=0; i<8*n;i++) {
-            Card nextCard = new Card(Integer.parseInt(fileScan.nextLine()) );
-            initialPack[i] = nextCard;
+            Card nextCard = new Card(Integer.parseInt(fileScan.nextLine()));
+            initialPack.add(nextCard);
         }
         return initialPack;
     }
@@ -53,14 +55,14 @@ public class Game {
      * @param n the number of players
      * @return boolean corresponding to whether the game can be won
      */
-    static boolean winnableGame(Card[] pack,int n){
+    static boolean winnableGame(ArrayList<Card> pack,int n){
         int counter;
         for (int i=0; i<8*n;i++){
             counter = 0;
             for(int j=0; j<8*n;j++){
-                if (pack[i].getValue() == pack[j].getValue()) counter++; 
-            }//counter done for each member of the list
-            if (counter >= 4) return true;//if there is no member that appears more than 4 times,game can't be won
+                if (pack.get(i).getValue() == pack.get(j).getValue()) counter++; //replacement of [i] with .get(i)
+            }
+            if (counter >= 4) return true;
         }
         System.out.println("Deck doesn't have more than 3 of a single card, impossible to win");
         return false;   
@@ -69,45 +71,28 @@ public class Game {
     
     
     
-    /** Function to deal out cards in a round robin fashion to either form all hands or all decks     * 
+    /** Function to deal out cards in a round robin fashion to either form all hands or all decks
+     * 
      * 
      * @param pack the initial pack that deals out all cards
      * @param isHand boolean to indicate whether or not to deal with respect to a hand or deck
      * @param n amount of players
      * @param placeInPack indexing starts from different place depending on deck or card
-     * @return Array of either decks or hands
+     * @return ArrayList of either decks or hands
      */
-    static Card[][] deal(Card[] pack, boolean isHand, int n, int placeInPack){
-        Card[][] cardsArray = isHand? new Card[n][4]: new Card[n][4*n]; //if hand: each array is size 4 else size 4n
-       
-        int addCount = placeInPack; //Starting index to iterate through deck array
-        for(int cIndex=0; cIndex<4; cIndex++){ //deals to hand or deck in a round robin fashion
+    static ArrayList<ArrayList<Card>> deal(ArrayList<Card> pack, int n){//isHand boolean and placeInPack no longer required
+        ArrayList<ArrayList<Card>> cardsArray = new ArrayList<>(n); //no deciding hand or deck as flexible arrayList
+        for (int i=0; i<n;i++){cardsArray.add(new ArrayList<>());}
+        for (int cIndex =0; cIndex<4; cIndex++){
             for (int pIndex=0; pIndex<n; pIndex++ ){
-                cardsArray[pIndex][cIndex] = pack[addCount];
-                addCount++; //increments count so next card added is next one in the deck
+                Card nextCard = pack.remove(0);
+                cardsArray.get(pIndex).add(nextCard); //int addcount also redundant
             }
-        }      
+        }
         return cardsArray;
-    }     
-    /**Static function to return all hands that will be used in the game
-     * 
-     * @param pack the initial pack that deals out all cards
-     * @param n the amount of players
-     * @return an array of hands
-     */
-    static Card[][] dealToHands(Card[] pack, int n){
-        return deal(pack, true, n, 0); //sets parameters to specify hand in the deal function
-    }
-
-    /** Static function to return all decks that will be used in the game
-     * 
-     * @param pack the initial pack that deals out all cards
-     * @param n the amount of players
-     * @return an array of decks
-     */
-    static Card[][] dealToDecks(Card[] pack, int n){
-        return deal(pack, false, n, 4*n);
-    }
+    }    
+    
+    //no need to differentiate between hand and deck so dealToHand and dealToDeck are now removed
     
     
     
@@ -130,7 +115,7 @@ public class Game {
             }   //guarded do-while loop to query user for a legitimate text file
             
         boolean gameReady = false;
-        Card[] initialPack = new Card[8*n];
+        ArrayList<Card> initialPack = new ArrayList<>();
         while (gameReady == false){    
             FileReader fr;
             String textFile = "";
@@ -153,29 +138,30 @@ public class Game {
             
         gameReady = winnableGame(initialPack,n); //once pack created,checks to see if the game is able to finish
         //closes scanners 
-        fr.close();     
-        
+        fr.close();      
     }
-        
-        cmdScan.close();  //closes fileReaders and scanners to avoid inteference with the threading
-        Thread[] playerArray = new Thread[n];
+            
+        cmdScan.close();   
+        ArrayList<Thread> playerArray = new ArrayList<>();
         
         //iterates over handArray, distributing each card to it in a round robin fashion
-        Card[][] handArray = dealToHands(initialPack, n);
+        ArrayList<ArrayList<Card>> handArray = deal(initialPack, n);
         
         //performs same iterations but this time on the decks in a round robin fashion
-        Card[][] deckArray =  dealToDecks(initialPack, n);
+        ArrayList<ArrayList<Card>> deckArray =  deal(initialPack, n);
+        ArrayList<CardDeck<Card>> cardDecks = new ArrayList<>(); 
         
-        CardDeck[] cardDecks = new CardDeck[n];        
-        for (int decks=0;decks<n;decks++){cardDecks[decks] = new CardDeck(deckArray[decks]);}
+        for (int decks=0;decks<n;decks++){cardDecks.add(new CardDeck<>(deckArray.get(decks)));}
         for (int q=0; q<n;q++){
-            //z made to find 0th member of array for right deck when lightDeck is n-1
+            //z made to find nth member of ArrayList for left deck
             int z = (q == n-1)?0:q+1;
-            playerArray[q] = new Thread (new Player((q+1),handArray[q],cardDecks[q],cardDecks[z]));
-            playerArray[q].setName("Player " + (q+1));
+            playerArray.add(new Thread (new Player((q+1),handArray.get(q),cardDecks.get(q),cardDecks.get(z))));
+            playerArray.get(q).setName("Player " + (q+1));
+            
         }
         
         for (Thread player: playerArray){player.start();}
+
 
     }
     }

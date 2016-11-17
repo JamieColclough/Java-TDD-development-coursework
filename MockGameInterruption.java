@@ -1,32 +1,32 @@
-package game;
+ import java.util.ArrayList;
 /**
  * MockGameInterruption Class
  * mock of Game class that simulates a interruption event
  * whilst an other player is the waiting state
- * @version 1.1
+ * @version 2.1
  */
 public class MockGameInterruption
 {
     public static void main (String args[])
     {
-        Card[] cardDeck1Cards = new Card[8];
-        cardDeck1Cards[0] = new Card(1);
-        cardDeck1Cards[1] = new Card(2);
+        ArrayList<Card> cardDeck1Cards = new ArrayList<Card>();
+        cardDeck1Cards.add(new Card(1));
+        cardDeck1Cards.add(new Card(2));
         
-        final CardDeck cardDeck1 = new CardDeck(cardDeck1Cards);
-        final CardDeck cardDeck2 = new CardDeck(new Card[8]);
+        final CardDeck<Card> cardDeck1 = new CardDeck<Card>(cardDeck1Cards);
+        final CardDeck<Card> cardDeck2 = new CardDeck<Card>(new ArrayList<Card>());
         
-        Card[] player1Cards = new Card[4];
-        player1Cards[0] = new Card(0);
-        player1Cards[1] = new Card(0);
-        player1Cards[2] = new Card(1);
-        player1Cards[3] = new Card(1);
+        ArrayList<Card> player1Cards = new ArrayList<Card>();
+        player1Cards.add(new Card(0));
+        player1Cards.add(new Card(0));
+        player1Cards.add(new Card(1));        
+        player1Cards.add(new Card(1));        
         
-        Card[] player2Cards = new Card[4];
-        player2Cards[0] = new Card(1);
-        player2Cards[1] = new Card(3);
-        player2Cards[2] = new Card(4);
-        player2Cards[3] = new Card(5);
+        ArrayList<Card> player2Cards = new ArrayList<Card>();
+        player2Cards.add(new Card(1));
+        player2Cards.add(new Card(3));
+        player2Cards.add(new Card(4));        
+        player2Cards.add(new Card(5));          
         
         Player player1 = new Player(1, player1Cards, cardDeck1, cardDeck2);
         Player player2 = new Player(2, player2Cards, cardDeck2, cardDeck1);
@@ -49,3 +49,4 @@ public class MockGameInterruption
         // to wake up and exit run 
     }
 }
+

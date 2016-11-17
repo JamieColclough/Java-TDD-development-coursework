@@ -1,19 +1,20 @@
-package game;
+package game2;
 
+import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**
- * series of unit tests for player class
- * @version 1.1
+ * series of unit tests for generic version of player class
+ * @version 2.0
  */
 public class PlayerTest {
     Player expectedPlayer;
     Player testPlayer;
-    Card[] genericHand;
-    Card[] cardArrayl = new Card[28];
-    Card[] cardArrayr = new Card[28];
+    ArrayList<Card> genericHand;
+    ArrayList<Card> cardArrayl = new ArrayList<>();
+    ArrayList<Card> cardArrayr = new ArrayList<>();
     CardDeck cardDeckl;
     CardDeck cardDeckr;
     
@@ -24,9 +25,9 @@ public class PlayerTest {
     
     @Before
     public void setUp() {
-        genericHand = new Card[4];
+        genericHand = new ArrayList<>();
         for(int i=0;i<4;i++){
-            genericHand[i] = new Card(i+1);}
+            genericHand.add(new Card(i+1));}
         
         cardDeckl = new CardDeck(cardArrayl);
         cardDeckr = new CardDeck(cardArrayl);
@@ -35,48 +36,25 @@ public class PlayerTest {
     }
 
     /**
-     * Test to analyse behaviour of addCard() on a deck with 4 cards already in it
+     * Tests for addCard method removed as the method itself was removed 
      */
-    @Test
-    public void addCardToHandWith4Cards() {
-        Card[] testHand = new Card[4];
-        for(int i=0;i<4;i++){ 
-            testHand[i] = new Card(i);
-        }
-        
-        testPlayer = new Player(1,testHand,cardDeckl,cardDeckr);
-        assertTrue(testPlayer.addCard(new Card(4)));//
-    }
+    
     
     /**
-     * Test to analyse behaviour of addCard() on a deck with 5 players in it
-     */
-    @Test
-    public void addCardToHandWith5Cards(){
-         Card[] testHand = new Card[4];
-        for(int i=0;i<4;i++){ 
-            testHand[i] = new Card(i);
-        }        
-        testPlayer = new Player(1,testHand,cardDeckl,cardDeckr);
-        testPlayer.addCard(new Card(5));
-        assertFalse(testPlayer.addCard(new Card(6)));//can't testEquals for this one as cannot create player with array of 5
-    }
-
-    /**
-     * Test to show winningHand() returns true on a winning deck
+     * Test to show winningHand method returns true on a winning hand
      */
     @Test
     public void testWinningHandTrue() {
-        Card[] winningHand = new Card[4];
+        ArrayList<Card> winningHand = new ArrayList<>();
         for(int i=0;i<4;i++){
-        winningHand[i] = new Card(1);
+        winningHand.add(new Card(1));
         
         testPlayer = new Player(1,winningHand,cardDeckl,cardDeckr);
         assertTrue(testPlayer.winningHand());//asserts that if the player has a winning hand, will return true
         }
     }
     /**
-     * Test to show winningHand() returns false on a non-winning deck
+     * Test to show winningHand method returns false on a non-winning hand
      */
     @Test
     public void testWinningHandFalse(){
@@ -90,9 +68,9 @@ public class PlayerTest {
      */
     @Test
     public void noNonPreferedCardInHand() {        
-        Card[] winningHand = new Card[4];
+        ArrayList<Card> winningHand = new ArrayList<>();
         for(int i=0;i<4;i++){
-            winningHand[i] = new Card(1);
+            winningHand.add(new Card(1));
         //if the player has no non-prefered cards, will return null
         testPlayer = new Player(1,winningHand,cardDeckl,cardDeckr);
         expectedPlayer = new Player(1,winningHand,cardDeckl,cardDeckr);
@@ -101,18 +79,19 @@ public class PlayerTest {
         }
     }
     /**
-     * Test to see whether the nonPreferredCard method works on a hand where the first non-preferred card is first in the hand
+     * Test to see whether the nonPreferedCard method works on a hand where
+     * the first non-preferred card is first in the hand
      */
     @Test
     public void nonPreferedCardIsFirst() {  
-        genericHand = new Card[4];
-        Card[] testHand = new Card[4];
+        genericHand = new ArrayList<>();
+        ArrayList<Card> testHand = new ArrayList<>();
         for(int i=0;i<4;i++){
-            genericHand[i] = new Card(i+1);
+            genericHand.add(new Card(i+1));
         }
-        testHand[0] = new Card(1);
-        testHand[1] = new Card(3);
-        testHand[2] = new Card(4);
+        testHand.add(new Card(1));
+        testHand.add(new Card(3));
+        testHand.add(new Card(4));
         testPlayer = new Player(1,genericHand,cardDeckl,cardDeckr);
         expectedPlayer = new Player(1,testHand,cardDeckl,cardDeckr);
         assertEquals(new Card(2),testPlayer.nonPreferedCard());//1 is the preferred card, will return next non-preferred one,
@@ -120,17 +99,18 @@ public class PlayerTest {
     }
     
     /**
-     * Test to see whether the nonPrefferedCard method works on a hand where the first non-preferred card is last in the hand
+     * Test to see whether the nonPreferedCard method works on a hand where the first 
+     * non-preferred card is last in the hand
      */
     @Test
     public void nonPreferedCardIsLast() {  
-        genericHand = new Card[4];
-        Card[] testHand = new Card[4];
+        genericHand = new ArrayList<>();
+        ArrayList<Card> testHand = new ArrayList<>();
         for(int i=0;i<3;i++){
-            genericHand[i] = new Card(1);
-            testHand[i] = new Card(1);
+            genericHand.add(new Card(1));
+            testHand.add(new Card(1));
         }
-        genericHand[3] = new Card(2);
+        genericHand.add(new Card(2));
         testPlayer = new Player(1,genericHand,cardDeckl,cardDeckr);
         expectedPlayer = new Player(1,testHand,cardDeckl,cardDeckr);
         expectedCard = new Card(2);
@@ -139,7 +119,7 @@ public class PlayerTest {
     }
 
     /**
-     * Tests equals method on instances of Player in which the method should return true
+     * Tests equals method on instances of player in which the method should return true
      */
     @Test
     public void testEqualsTrue() {        
@@ -151,7 +131,6 @@ public class PlayerTest {
         assertEquals(expectedPlayer,testPlayer); //should be equal by defined method       
     }
     
-    
     /**
      * Tests equals method on instances of Player in which the method should return false
      */
@@ -159,7 +138,7 @@ public class PlayerTest {
     public void testEqualsFalse(){
         
         Player differentPreferencePlayer = new Player(2,genericHand,cardDeckl,cardDeckr);
-        Player differentHandPlayer = new Player(1,new Card[4],cardDeckl,cardDeckr);
+        Player differentHandPlayer = new Player(1,new ArrayList<>(),cardDeckl,cardDeckr);
         Player differentLDeckPlayer = new Player(1,genericHand,differentDeck,cardDeckr);
         Player differentRDeckPlayer = new Player(1,genericHand,cardDeckl,differentDeck);
         

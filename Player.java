@@ -50,11 +50,10 @@ public class Player implements Runnable
     /**
      * Method checks if the players current hand is a winning hand where all
      * cards have the same value
+     * by comparing card values in the hand to the first cards value
      * @return          true if hand is a winning hand, else false
      */
     public boolean winningHand()
-    // this method compares card values in the hand to the first cards value, if they all have the same
-    // value it return true
     {
         int value = hand.get(0).getValue();
         boolean winningHand = true;

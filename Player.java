@@ -20,7 +20,7 @@ public class Player implements Runnable
 
 
     /**
-     * Consturctor for a Player
+     * Constructor for a Player
      * @param preference        the players perferred number, also the players number
      * @param hand              cards dealt to player, the players hand
      * @param leftDeck          deck of cards the player will take a card from

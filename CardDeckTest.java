@@ -30,7 +30,8 @@ public class CardDeckTest {
     
     @Before
     public void setUp() {
-        Card[] cardArray = new Card[28]; //28 highest possible size as this is 4n
+        Card[] cardArray = new Card[28]; // 28 is the highest possible size, as this is 4n, when n (number of players) is at its maximum of 7
+                                         // the other 4n cards (of the 8n in play) would be in the players hands
         cardDeck2 = new CardDeck(cardArray);//initialises cardDeck2 as an empty deck
         for (int i=0;i<28;i++) cardArray[i] = new Card(i);
         expectedDeck = new CardDeck(cardArray);//initialises expectedDeck as a deck with cards with values from 0 to 27

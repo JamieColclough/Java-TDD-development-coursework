@@ -52,7 +52,7 @@ public class CardDeckTest {
     }
 
     /**
-     * Tests that the takeCard method works on the corner case of a full deck
+     * Tests that the takeCard method works on the corner case of a full CardDeck
      * @throws java.lang.InterruptedException
      */
     @Test
@@ -68,7 +68,7 @@ public class CardDeckTest {
     }
     
     /**
-     * Tests that the takeCard method works on a regular deck
+     * Tests that the takeCard method works on a regular CardDeck (half full)
      *@throws java.lang.InterruptedException
      */
     @Test
@@ -88,7 +88,7 @@ public class CardDeckTest {
         assertEquals(expectedDeck,testDeck);//asserts the hand taken is the same as the mock deck with same contents as expected result           
     }
     /**
-     * tests the takeCard method on the corner case of a deck with only 1 element remaining
+     * tests the takeCard method on the corner case of a CardDeck with only 1 element remaining
      * @throws java.lang.InterruptedException
      */
     @Test
@@ -107,7 +107,7 @@ public class CardDeckTest {
     }
 
     /**
-     * Tests the placeCard method on the corner case of an empty deck
+     * Tests the placeCard method on the corner case of an empty CardDeck
      */
     @Test
     public void placeCardOnEmptyDeck(){
@@ -124,7 +124,7 @@ public class CardDeckTest {
     }
     
     /**
-     * Tests placeCard method on the regular case of an non-empty deck
+     * Tests placeCard method on the regular case of an non-empty CardDeck
      */
     @Test
     public void placeCardOnNonEmptyDeck(){

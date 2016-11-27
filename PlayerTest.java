@@ -31,11 +31,11 @@ public class PlayerTest {
         cardDeckl = new CardDeck(cardArrayl);
         cardDeckr = new CardDeck(cardArrayl);
         cardDeckl.placeCard(new Card(1));
-        cardDeckr.placeCard(new Card(2));//done just to make both decks original
+        cardDeckr.placeCard(new Card(2));//done just to make both CardDecks original
     }
 
     /**
-     * Test to analyse behaviour of addCard() on a deck with 4 cards already in it
+     * Test to analyse behaviour of addCard() on a player whose hand has 4 cards already in it
      */
     @Test
     public void addCardToHandWith4Cards() {
@@ -49,7 +49,7 @@ public class PlayerTest {
     }
     
     /**
-     * Test to analyse behaviour of addCard() on a deck with 5 players in it
+     * Test to analyse behaviour of addCard() on a player whose hand has 5 cards in it
      */
     @Test
     public void addCardToHandWith5Cards(){
@@ -57,13 +57,13 @@ public class PlayerTest {
         for(int i=0;i<4;i++){ 
             testHand[i] = new Card(i);
         }        
-        testPlayer = new Player(1,testHand,cardDeckl,cardDeckr);
-        testPlayer.addCard(new Card(5));
-        assertFalse(testPlayer.addCard(new Card(6)));//can't testEquals for this one as cannot create player with array of 5
+        testPlayer = new Player(1,testHand,cardDeckl,cardDeckr);  // player hand has 4 cards
+        testPlayer.addCard(new Card(5));                          // players hand should now have 5 cards
+        assertFalse(testPlayer.addCard(new Card(6)));             // should return false as you cant add anymore cards to a player who already has 5 cards in hand
     }
 
     /**
-     * Test to show winningHand() returns true on a winning deck
+     * Test to show winningHand() returns true on a winning hand
      */
     @Test
     public void testWinningHandTrue() {
@@ -76,7 +76,7 @@ public class PlayerTest {
         }
     }
     /**
-     * Test to show winningHand() returns false on a non-winning deck
+     * Test to show winningHand() returns false on a non-winning hand
      */
     @Test
     public void testWinningHandFalse(){
@@ -86,7 +86,8 @@ public class PlayerTest {
     }
 
     /**
-     * Test that when the hand is a winning one, nothing is changed
+     * Test that the method nonPrederredCard returns null and does not remove any cards from the players hand
+     * when there are no non-preferred cards in the players hand
      */
     @Test
     public void noNonPreferedCardInHand() {        

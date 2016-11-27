@@ -1,7 +1,7 @@
 package game;
 /**
  * MockGameInterruption Class
- * mock of Game class that simulates a interruption event
+ * mock of Game class that simulates a interruption scenario
  * whilst an other player is the waiting state
  * @version 1.1
  */
@@ -38,12 +38,12 @@ public class MockGameInterruption
         
         
         b.start();
-        // what for thread b (player 2) to get into waiting state
+        // below: wait for thread b (player 2) to get into waiting state
         while(!(b.getState() == Thread.State.WAITING)){} 
         // once player 2 is in waiting state, start player 1
         a.start(); 
         a.interrupt();        
-        // player 1 is interrupted before getting a chance to place a card, on rightDeck
+        // player 1 is interrupted before getting a chance to place a card, on its rightDeck
         // so player 2 is left in waiting state, before player 1 exits run it calls
         // rightDeck.gameInterruption() which notifies the waiting player 2, causing it
         // to wake up and exit run 

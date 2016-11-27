@@ -86,7 +86,7 @@ public class PlayerTest {
     }
 
     /**
-     * Test that the method nonPrederredCard returns null and does not remove any cards from the players hand
+     * Test that the method nonPreferredCard returns null and does not remove any cards from the players hand
      * when there are no non-preferred cards in the players hand
      */
     @Test

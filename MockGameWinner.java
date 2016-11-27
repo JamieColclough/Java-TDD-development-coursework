@@ -1,7 +1,7 @@
 package game;
 /**
  * MockGameWinner Class
- * mock of Game class that simulates a Winner event
+ * mock of Game class that simulates a Winner scenario
  * whilst an other player is the waiting state
  * @version 1.1
  */
@@ -38,7 +38,7 @@ public class MockGameWinner
         b.setName("Player 2");
         
         b.start();
-        // what for thread b (player 2) to get into waiting state
+        // below: wait for thread b (player 2) to get into waiting state
         while(!(b.getState() == Thread.State.WAITING)){} 
         // once player 2 is in waiting state, start player 1
         a.start(); 

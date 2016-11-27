@@ -21,7 +21,7 @@ public class CardDeck
     /**
      * Constructor for a CardDeck
      * @param cards         initial array of cards for the cardDeck, its total length will be
-     *                      equal to the maximum number of cards the deck can hold
+     *                      equal to the maximum number of cards the cardDeck can hold
      */
     public CardDeck(Card[] cards)
     {

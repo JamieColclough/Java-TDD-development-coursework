@@ -13,14 +13,14 @@ public class CardDeck
     private final Card[] cards;
     private volatile boolean empty;
     // volatile boolean empty used as its updated
-    // in way that allows the other threads sharing this card deck to see the change
-    // it allows for a notify method to be used to wake up threads waiting for card
-    // deck to be non empty (so that they can take a card)    
+    // in a way that allows the other threads sharing this cardDeck instance to see the change
+    // attribute also allows for a notify method to be used to wake up threads waiting for
+    // cardDeck to be non empty (so that they can take a card)    
     private volatile int numberOfCards;
     
     /**
      * Constructor for a CardDeck
-     * @param cards         initial array of cards for the card deck, its total length will be
+     * @param cards         initial array of cards for the cardDeck, its total length will be
      *                      equal to the maximum number of cards the deck can hold
      */
     public CardDeck(Card[] cards)
@@ -31,7 +31,7 @@ public class CardDeck
         // iterate through to remove null 'gaps' between card entries, this does not occur in our
         // program but it is possible if class used for other purposes.
         // also allows correct numberOfCards variable to be set, can not use cards.length as this
-        // is the maximum the card deck can hold in this.cards, not the actual number of 
+        // is the maximum the cardDeck can hold in this.cards, not the actual number of 
         // initial cards
         for(int i=0; i<cards.length; i++)
         {
@@ -47,9 +47,9 @@ public class CardDeck
 
     /**
      * Method tells other threads using this particular deck that the game has been interrupted by
-     * setting static AtomicBoolean gameInterrupted to true
-     * it also notifies threads that this has happened so that threads waiting for a card
-     * to placed on this deck stop waiting.
+     * setting AtomicBoolean gameInterrupted to true
+     * and notifiying threads that this has happened so that threads waiting for a card
+     * to be placed on this cardDeck stop waiting.
      */
     public synchronized void gameInterruption()
     {
@@ -82,7 +82,7 @@ public class CardDeck
         {throw new InterruptedException();}
         Card card = cards[0]; // take the first card
         
-        if (numberOfCards > 1) // if the cardDeck has more than 1, cards will have to
+        if (numberOfCards > 1) // if the cardDeck has more than 1 card, cards will have to
         {                     // be shuffled down when first one is removed
             for(int i=0; i<=(numberOfCards-2); i++)
             {
@@ -90,8 +90,8 @@ public class CardDeck
                 cards[i+1] = null;
             }
         }
-        else // if the cardDeck has only have one card, just set the first
-        {    // entry  to null, on need to shuffle down
+        else // if the cardDeck only has one card, just set the first
+        {    // entry to null, no need to shuffle down
             cards[0] = null;
         }
         numberOfCards--;      
@@ -111,10 +111,10 @@ public class CardDeck
     {
         assert numberOfCards < cards.length;
         // assert this because adding more than cards.length should not actually occur in the game
-        // the cardDeck may hold more than it did initialy, but its length was set to the maximum
+        // the cards array may hold more than it did initialy, but its length was set to the maximum
         // when it was constructed
         cards[numberOfCards] = card; // add it after the last card entry to be at 'bottom'
-        numberOfCards++;             // of deck
+        numberOfCards++;             // of cardDeck
         empty = false;
         notifyAll();
     }
@@ -122,12 +122,12 @@ public class CardDeck
     @Override
     /**
      * Method compares an object for equivalency with CardDeck instance
+     * (used for junit testing to decide if a cardDeck is equal to another)
      * @param obj           object to be tested for equivalency with CardDeck instance
      * @return              true if the object is equivalent, else false
      */
     public boolean equals(Object obj)
     {
-        // used for junit testing to decide if a cardDeck is equal to another
         if(obj instanceof CardDeck){
             CardDeck cardDeck = ((CardDeck) obj);
             if(Arrays.equals(this.cards, cardDeck.cards) && 

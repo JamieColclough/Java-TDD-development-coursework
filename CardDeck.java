@@ -46,7 +46,7 @@ public class CardDeck
     }
 
     /**
-     * Method tells other threads using this particular deck that the game has been interrupted by
+     * Method tells other threads using this particular cardDeck that the game has been interrupted by
      * setting AtomicBoolean gameInterrupted to true
      * and notifiying threads that this has happened so that threads waiting for a card
      * to be placed on this cardDeck stop waiting.

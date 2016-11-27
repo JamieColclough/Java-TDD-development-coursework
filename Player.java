@@ -14,8 +14,8 @@ public class Player implements Runnable
     private final static AtomicBoolean ALL_ALIVE = new AtomicBoolean(true);
     // AtomicBoolean used so that only one player thread can read/write at a time,
     // again this allows only most up to date value to be seen.    
-    private final Card[] hand = new Card[5];  // 5 because rules specify you take a card before placing card
-    private int cardsInHand = 0;
+    private final Card[] hand = new Card[5];  // 5, because rules specify you take a card before placing card
+    private int cardsInHand = 0;              // so you need an extra space (players usually have 4 cards)
     private final int preference;
     private final CardDeck leftDeck;
     private final CardDeck rightDeck;
@@ -31,8 +31,7 @@ public class Player implements Runnable
     {
         assert preference > 0;
         assert cards.length < 5;  
-        // should only be given 4,the last space is so it can take a new card from deck before
-        // placing card on a card deck.
+        // should only be given 4
         cardsInHand = 0;
         for(int i=0; i<4; i++)
         {
@@ -52,11 +51,11 @@ public class Player implements Runnable
     
     /**
      * Method adds a card to the player hand
+     * (needed to add a single card to the hand once it has been taken from the left cardDeck)
      * @param card      the card to be added
      * @return          true if the card is added, false if it can not be
      */
     public boolean addCard(Card card)
-    // needed to add a single card to the hand once it has been taken from the left card deck  
     {
         if (cardsInHand == 5){return false;} // can't add anymore cards, hand is full
         hand[cardsInHand] = card;
@@ -66,12 +65,11 @@ public class Player implements Runnable
     
     /**
      * Method checks if the player's current hand is a winning hand where all
-     * cards have the same value
+     * cards have the same value. It does this by comparing all card values in
+     * the hand to the first cards value
      * @return          true if hand is a winning hand, else false
      */
     public boolean winningHand()
-    // this method compares card values in the hand to the first cards value, if they all have the same
-    // value it returns true
     {
         int value = hand[0].getValue();
         boolean winningHand = true;
@@ -87,14 +85,14 @@ public class Player implements Runnable
     }
 
     /**
-     * Method returns first card whose value is not the same as the players preference
+     * Method returns first card whose value is not the same as the players preference.
+     * should be called after winningHand() check, if the hand is a 'winning hand' consisting entirely of cards
+     * that are the players preference this method will return null. A player cannot give a preferred
+     * card if there are none.
      * @return          non preferred card, or null if no such card was found
      */
     public Card nonPreferedCard()
     {
-        // should be called after winningHand() check, if the hand is a 'winning hand' consisting of cards
-        // that are the players preference this method will return null. A player cannot give a preferred
-        // card if there are none.
         Card nonPrefered = null;
         
         if (!winningHand()){ // checks that there are non preferred cards before trying to take one.
@@ -123,14 +121,14 @@ public class Player implements Runnable
 
     @Override
     /**
-     * Method compares an object for equivalency with the player instance
+     * Method compares an object for equivalency with the player instance.
+     * used so that assertEquals() used in junit testing has an accurate equals method to call when
+     * asserting that players are the same, this judges players to be the same if they are in the same
+     * state, (so same cardDecks and same hand) not just same player number/preference.
      * @param obj       object to be tested for equivalency with player instance
      * @return          true if object is equivalent, else false
      */
     public boolean equals(Object obj)
-    // used so that assertEquals() used in junit testing has an accurate equals method to call when
-    // asserting that players are the same, this judges players to be the same if they are in the same 
-    // state, (so same card decks and same hand) not just same player number/preference.
     {
         if(obj instanceof Player){
             Player player = ((Player) obj);
@@ -158,7 +156,7 @@ public class Player implements Runnable
             // below: only updates if currently no winner (WINNER is false)
             if(WINNER.compareAndSet(false,winningHand()))
             // compareAndSet used as it combines an atomic read and write, so that only one player
-            // at a time can read the WINNER value and change the value at time. as the reading 
+            // at a time can read the WINNER value and change the value. as the reading 
             // and writing are carried out sychronously in compareAndSet(), only one player is able to
             // declare it's the winner.
                 System.out.println("Player " + preference + " wins");
@@ -166,13 +164,11 @@ public class Player implements Runnable
 
         while (!WINNER.get() && ALL_ALIVE.get()&& !Thread.currentThread().isInterrupted()) 
         // will stop running if a winner found, or not all threads
-        // are alive, meaning a players thread was interrupted
-        // or terminated
+        // are alive, (meaning a players thread was interrupted)
+        // or this player has been interrupted
         {
             try{        
 
-                // if another player has been interrupted, there is the possiblity that this player
-                // could get stuck waiting in takeCard 
                 
                 addCard(leftDeck.takeCard());   // takeCard uses wait() and can throw InterruptedException
                 rightDeck.placeCard(nonPreferedCard());
@@ -181,13 +177,13 @@ public class Player implements Runnable
             
                 if(winningHand())
                 {
-                    // below: only updates and fires winningEvent if currently no winner (WINNER is false)
+                    // below: only updates if currently no winner (WINNER is false)
                     if(WINNER.compareAndSet(false,winningHand()))
                     {System.out.println("Player " + preference + " wins");}
                     break;
                 }
             }
-            catch(InterruptedException e){ // thrown from takeCard (caught here so we can stop the  player
+            catch(InterruptedException e){ // thrown from takeCard, caught here so we can stop the player
                                            // straight away, rather than have it exit takeCard() and try to
                                            // carry out the remainder of the run method.
                 break;
@@ -195,8 +191,8 @@ public class Player implements Runnable
         }
          ALL_ALIVE.set(false);
          
-         // below: tell the rightDeck that game has been interrupted, if a thread is waiting for
-         // this deck to have cards placed on it, it will not stop waiting and throw its own 
+         // below: tell the rightDeck that the game has been interrupted, if a thread is waiting for
+         // this cardDeck to have cards placed on it, it will not stop waiting and throw its own 
          // InterruptedException         
          rightDeck.gameInterruption();
          System.out.println("Player " + preference + " exiting run");

@@ -1,7 +1,8 @@
- import java.util.ArrayList;
+package game;
+import java.util.ArrayList;
 /**
  * MockGameInterruption Class
- * mock of Game class that simulates a interruption event
+ * mock of Game class that simulates a interruption scenario
  * whilst an other player is the waiting state
  * @version 2.1
  */
@@ -9,20 +10,20 @@ public class MockGameInterruption
 {
     public static void main (String args[])
     {
-        ArrayList<Card> cardDeck1Cards = new ArrayList<Card>();
+        ArrayList<Card> cardDeck1Cards = new ArrayList<>();
         cardDeck1Cards.add(new Card(1));
         cardDeck1Cards.add(new Card(2));
         
-        final CardDeck<Card> cardDeck1 = new CardDeck<Card>(cardDeck1Cards);
-        final CardDeck<Card> cardDeck2 = new CardDeck<Card>(new ArrayList<Card>());
+        final CardDeck<Card> cardDeck1 = new CardDeck<>(cardDeck1Cards);
+        final CardDeck<Card> cardDeck2 = new CardDeck<>(new ArrayList<Card>());
         
-        ArrayList<Card> player1Cards = new ArrayList<Card>();
+        ArrayList<Card> player1Cards = new ArrayList<>();
         player1Cards.add(new Card(0));
         player1Cards.add(new Card(0));
         player1Cards.add(new Card(1));        
         player1Cards.add(new Card(1));        
         
-        ArrayList<Card> player2Cards = new ArrayList<Card>();
+        ArrayList<Card> player2Cards = new ArrayList<>();
         player2Cards.add(new Card(1));
         player2Cards.add(new Card(3));
         player2Cards.add(new Card(4));        
@@ -38,7 +39,7 @@ public class MockGameInterruption
         
         
         b.start();
-        // what for thread b (player 2) to get into waiting state
+        // below: wait for thread b (player 2) to get into waiting state
         while(!(b.getState() == Thread.State.WAITING)){} 
         // once player 2 is in waiting state, start player 1
         a.start(); 
@@ -49,4 +50,3 @@ public class MockGameInterruption
         // to wake up and exit run 
     }
 }
-

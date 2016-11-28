@@ -1,3 +1,4 @@
+package game;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.ArrayList;
 /**
@@ -17,11 +18,9 @@ public class Player implements Runnable
     private final int preference;
     private final CardDeck<Card> leftDeck;
     private final CardDeck<Card> rightDeck;
-
-
     /**
      * Constructor for a Player
-     * @param preference        the players perferred number, also the players number
+     * @param preference        the players preferred number, also the players number
      * @param hand              cards dealt to player, the players hand
      * @param leftDeck          deck of cards the player will take a card from
      * @param rightDeck         deck of cards the player will place a card on
@@ -33,7 +32,7 @@ public class Player implements Runnable
         // should only be given 4
         
         for(Card card: hand)
-        // ArrayList may still contain null entries, this process removes them
+        // hand ArrayList may still contain null entries, this process removes them
         {
             if(card != null)
             {this.hand.add(card);}
@@ -67,17 +66,15 @@ public class Player implements Runnable
         
         return winningHand;
     }
-
-
     /**
      * Method returns first card whose value is not the same as the players preference
+     * should be called after winningHand() check, if the hand is a 'winning hand' consisting of cards
+     * that are the players preference this method will return null. A player cannot give a preferred
+     * card if there are none.
      * @return          non preferred card, or null if no such card was found
      */    
     public Card nonPreferedCard()
     {
-        // should be called after winningHand() check, if the hand is a 'winning hand' consisting of cards
-        // that are the players preference this method will return null. A player cannot give a preferred
-        // card if there are none.
         Card nonPrefered = null;
         
         if (!winningHand()){ // checks that there are non preferred cards before trying to take one.
@@ -95,7 +92,6 @@ public class Player implements Runnable
         }
         return nonPrefered;
     }
-
     @Override
     /**
      * Method compares an object for equivalency with the player instance
@@ -117,7 +113,7 @@ public class Player implements Runnable
         }
         return false;
     }
-
+    @Override
     /**
      * Method allows player to run and play the game, loop is repeated until a winner
      * is found, a different player is interrupted, or this player is intertupted
@@ -137,10 +133,9 @@ public class Player implements Runnable
                 System.out.println("Player " + preference + " wins");
             
         }           
-
         while (!WINNER.get() && ALL_ALIVE.get()&& !Thread.currentThread().isInterrupted()) 
         // will stop running if a winner found, or not all threads
-        // are alive, meaning a players thread was interrupted
+        // are alive, (meaning a players thread was interrupted) or this player is interrupted
         {
             try{          
                             
@@ -154,7 +149,7 @@ public class Player implements Runnable
             
                 if(winningHand())
                 {
-                    // below: only updates and fires winningEvent if currently no winner (WINNER is false)
+                    // below: only updates if currently no winner (WINNER is false)
                     if(WINNER.compareAndSet(false,winningHand()))
                     {System.out.println("Player " + preference + " wins");}
                     break;
@@ -166,8 +161,6 @@ public class Player implements Runnable
                 break;
             }
         }
-
-
          ALL_ALIVE.set(false);
          
          // below: tell the rightDeck that game has been interupted, if a thread is waiting for

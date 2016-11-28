@@ -1,10 +1,8 @@
-package game2;
-
+package game;
 import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
-
 /**
  * series of unit tests for generic version of player class
  * @version 2.0
@@ -15,10 +13,10 @@ public class PlayerTest {
     ArrayList<Card> genericHand;
     ArrayList<Card> cardArrayl = new ArrayList<>();
     ArrayList<Card> cardArrayr = new ArrayList<>();
-    CardDeck cardDeckl;
-    CardDeck cardDeckr;
+    CardDeck<Card> cardDeckl;
+    CardDeck<Card> cardDeckr;
     
-    CardDeck differentDeck = new CardDeck(cardArrayl);//made just so it is different to the others
+    CardDeck<Card> differentDeck = new CardDeck<>(cardArrayl);//made just so it is different to the others
     
     Card testCard;
     Card expectedCard;
@@ -29,12 +27,11 @@ public class PlayerTest {
         for(int i=0;i<4;i++){
             genericHand.add(new Card(i+1));}
         
-        cardDeckl = new CardDeck(cardArrayl);
-        cardDeckr = new CardDeck(cardArrayl);
+        cardDeckl = new CardDeck<>(cardArrayl);
+        cardDeckr = new CardDeck<>(cardArrayl);
         cardDeckl.placeCard(new Card(1));
-        cardDeckr.placeCard(new Card(2));//done just to make both decks original
+        cardDeckr.placeCard(new Card(2));//done just to make both CardDecks original
     }
-
     /**
      * Tests for addCard method removed as the method itself was removed 
      */
@@ -60,11 +57,10 @@ public class PlayerTest {
     public void testWinningHandFalse(){
         testPlayer = new Player(1,genericHand,cardDeckl,cardDeckr);
         assertFalse(testPlayer.winningHand());//converse for this assertion
-
     }
-
     /**
-     * Test that when the hand is a winning one, nothing is changed
+     * Test that the method nonPreferredCard returns null and does not remove any cards from the players hand
+     * when there are no non-preferred cards in the players hand
      */
     @Test
     public void noNonPreferedCardInHand() {        
@@ -117,7 +113,6 @@ public class PlayerTest {
         assertEquals(expectedCard,testPlayer.nonPreferedCard());//1 is the preferred card, will return next non-preferred one,
         assertEquals(expectedPlayer,testPlayer);
     }
-
     /**
      * Tests equals method on instances of player in which the method should return true
      */
